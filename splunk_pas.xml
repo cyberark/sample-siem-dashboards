@@ -1,0 +1,387 @@
+<dashboard>
+  <label>CyberArk PAS</label>
+  <row>
+    <panel depends="$alwaysHideCSSPanel$">
+      <html>
+         <style>
+            table thead tr th,td{
+            font-size:115% !important;
+            width:150px !important;
+            border: 1px solid black !important;
+            text-align: left !important
+            }
+            table thead tr th{
+                font-weight: bold !important;
+            }
+         </style>
+       </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title># of Logon Actions - Last 7 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" logon suser!=PasswordManager, suser!=PVWAAppUser, suser!=PSMGw_COMPONENTS, suser!=Prov_COMPONENTS, suser!=PVWAGWUser, suser!=PSMApp_COMPONENTS suser!=NotificationEngine | stats count</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>30s</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,100,125,150]</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title># of Password Retrievals - Last 24 Hours</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" retrieve password suser!=PasswordManager| stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,1000,1250,1500]</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">preview</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trellis.splitBy">_aggregation</option>
+      </chart>
+    </panel>
+    <panel>
+      <title># of PSM Session Connects - Last 7 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" PSM Connect |stats count</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,100,125,150]</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title># of AdHoc Access Request Last 30 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" 471 | stats count</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.chart">fillerGauge</option>
+        <option name="charting.chart.rangeValues">[0,30,70,100]</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="trellis.enabled">0</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Most Active Users - Last 7 Days</title>
+      <chart>
+        <search>
+          <query>| pivot CyberArk_PAS_Users RootObject count(RootObject) AS "Count of 1552349715.117" SPLITROW suser AS suser SPLITCOL suser SORT 100 suser ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 100 SHOWOTHER 1</query>
+          <earliest>rt-7d</earliest>
+          <latest>rtnow</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisLabelsY.majorUnit">5</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.text">Count of 1552349715.117</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">auto</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Credentials Retrieved Last 7 Days</title>
+      <table>
+        <search>
+          <query>source="cyberark_pas" "|295|" OR "|428|" suser!=PasswordManager, suser!=PVWAAppUser, suser!=PSMApp_COMPONENTS, suser!=LOBUser_SyncDemo | table _time, suser, act, duser, cn2 | rename suser AS "VaultUser", act AS "Action", duser AS "Account Name", cn2 AS "Reason"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>10m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">highlow</option>
+        <option name="drilldown">row</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>PSM Connections - Weekly</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" PSM Connect | timechart count</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">1</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title># of CPM Password Changes Last 7 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" 24 |stats count</query>
+          <earliest>@w0</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,75,90,100]</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+      </chart>
+    </panel>
+    <panel>
+      <title># of SSH Key Rotations Last 7 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" "|416|" |stats count</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,75,90,100]</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+      </chart>
+    </panel>
+    <panel>
+      <title># of Password Change Failures Last 30 Days</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" "|57|" |stats count</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">radialGauge</option>
+        <option name="charting.chart.rangeValues">[0,30,50,100]</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.gaugeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Master Policy Changes over Last 30 Days</title>
+      <single>
+        <search>
+          <query>source="cyberark_pas" "|385|" OR "|386|" 
+|  timechart count</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">trend</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">266</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">1</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trellis.splitBy">_aggregation</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">-7d</option>
+        <option name="underLabel">Compared to 7 Days Prior</option>
+        <option name="unitPosition">before</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Accounts being used</title>
+      <table>
+        <search>
+          <query>source="cyberark_pas" "|295|" OR "|428|" suser!=PasswordManager, suser!=PVWAAppUser, suser!=PSMApp_COMPONENTS  cn2!=Moved 
+| table duser, dhost
+| rename duser AS "Account Name", dhost AS "Target Machine"</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Accounts being used</title>
+      <chart>
+        <search>
+          <query>source="cyberark_pas" "|295|" OR "|428|" suser!=PasswordManager, suser!=PVWAAppUser, suser!=PSMApp_COMPONENTS  cn2!=Moved | eval machineaccount=dhost + "---" + duser
+| chart count by machineaccount</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="height">316</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Password Retrieval Details - 30 Days</title>
+      <table>
+        <search>
+          <query>source="cyberark_pas" retrieve password suser!=PasswordManager</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">highlow</option>
+        <option name="drilldown">row</option>
+        <option name="percentagesRow">true</option>
+        <option name="refresh.display">preview</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>test</title>
+      <event>
+        <search>
+          <query>source="cyberark_pas" retrieve password suser!=PasswordManager</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="list.drilldown">full</option>
+        <option name="list.wrap">0</option>
+        <option name="maxLines">0</option>
+        <option name="raw.drilldown">full</option>
+        <option name="rowNumbers">0</option>
+        <option name="table.drilldown">all</option>
+        <option name="table.sortDirection">asc</option>
+        <option name="table.wrap">0</option>
+        <option name="type">list</option>
+      </event>
+    </panel>
+  </row>
+</dashboard>
